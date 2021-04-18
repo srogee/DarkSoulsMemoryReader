@@ -19,6 +19,41 @@ namespace DS3MemoryReader
             this.updateType = DS3AddressUpdateType.Automatic;
         }
 
+        public T Value
+        {
+            // Get value at memory referenced by this class
+            get
+            {
+                if (processInfo.IsValid) {
+                    if (updateType == DS3AddressUpdateType.Automatic) {
+                        RegenerateAddress();
+                    }
+
+                    object value;
+                    Type type = typeof(T);
+
+                    if (type == typeof(float)) {
+                        value = BitConverter.ToSingle(GetRawBytes(4));
+                    } else if (type == typeof(int)) {
+                        value = BitConverter.ToInt32(GetRawBytes(4));
+                    } else if (type == typeof(string)) {
+                        value = ReadString();
+                    } else {
+                        throw new Exception($"DS3MemoryValue does not support generic type {type}");
+                    }
+
+                    return (T)value;
+                } else {
+                    return default(T);
+                }
+            }
+        }
+
+        private string ReadString() {
+            byte[] bytes = GetRawBytes(16 * 2);
+            return System.Text.Encoding.Unicode.GetString(bytes);
+        }
+
         public void RegenerateAddress() {
             // Regenerate the real address of the value, since the pointers could have changed
             if (processInfo.IsValid) {
@@ -50,34 +85,8 @@ namespace DS3MemoryReader
                     processInfo.Detach();
                 }
             }
-            
+
             return new byte[0];
-        }
-
-        public T Value
-        {
-            // Get value at memory referenced by this class
-            get
-            {
-                if (processInfo.IsValid) {
-                    if (updateType == DS3AddressUpdateType.Automatic) {
-                        RegenerateAddress();
-                    }
-
-                    object value = null;
-                    Type type = typeof(T);
-
-                    if (type == typeof(float)) {
-                        value = BitConverter.ToSingle(GetRawBytes(sizeof(float)));
-                    } else {
-                        throw new Exception($"DS3MemoryValue does not support generic type {type}");
-                    }
-
-                    return (T)value;
-                } else {
-                    return default(T);
-                }
-            }
         }
 
         public override string ToString() {

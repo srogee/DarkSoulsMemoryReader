@@ -11,7 +11,9 @@ namespace DS3MemoryReader
             StringBuilder sb = new StringBuilder();
             Console.CursorVisible = false;
 
-            int baseB = 0x04768E78; // Base address for lots of information in DS3, like player related stuff
+            // Base addresses for lots of information in DS3
+            int baseA = 0x4740178;
+            int baseB = 0x4768E78;
             DS3MemoryAddress coordinatesBase = new DS3MemoryAddress(baseB, new int[] { 0x40, 0x28 }); // Common pointer for coordinates
 
             // Define values we want to inspect
@@ -19,6 +21,9 @@ namespace DS3MemoryReader
             var playerX = new DS3MemoryValue<float>(processInfo, coordinatesBase.AddOffset(0x80));
             var playerZ = new DS3MemoryValue<float>(processInfo, coordinatesBase.AddOffset(0x84));
             var playerY = new DS3MemoryValue<float>(processInfo, coordinatesBase.AddOffset(0x88));
+
+            var name = new DS3MemoryValue<string>(processInfo, new DS3MemoryAddress(baseA, new int[] { 0x10, 0x88 }));
+            var onlineArea = new DS3MemoryValue<int>(processInfo, new DS3MemoryAddress(baseB, new int[] { 0x80, 0x1ABC}));
 
             // Track console state so we can clear it if there would be visual artifacts
             int consoleState = 0;
@@ -45,10 +50,19 @@ namespace DS3MemoryReader
                         // We have a valid player, print its coordinates
                         consoleState = 3;
                         sb.AppendLine("Player found");
+                        sb.AppendLine();
+                        sb.AppendLine($"Character Name: {name}");
                         sb.AppendLine($"X: {playerX.Value:0.000000}");
                         sb.AppendLine($"Y: {playerY.Value:0.000000}");
                         sb.AppendLine($"Z: {playerZ.Value:0.000000}");
                         sb.AppendLine($"Angle: {playerAngle.Value:0.000000}");
+
+                        string onlineAreaDisplayValue = "Unknown";
+                        if (DS3OnlineAreas.IdToName.TryGetValue(onlineArea.Value, out string area)) {
+                            onlineAreaDisplayValue = area;
+                        }
+                        
+                        sb.AppendLine($"Online Area: {onlineAreaDisplayValue} ({onlineArea})");
                     }
                 }
 
