@@ -1,5 +1,5 @@
 # DS3 Memory Reader
-A simple console application for reading player coordinates in real time from a Dark Souls III process. Updates values at ~60hz and continually searches for DS3 so it works fine if DS3 closes or crashes.
+A simple console application for reading game data from a Dark Souls III process in real time. Updates values at ~60hz and continually searches for the Dark Souls III process, so it will work fine if the game is closed and reopened. I plan to use this for a standalone minimap application, but other uses could be displaying where players died, what items they skipped, etc.
 
 Example output:
 ```
