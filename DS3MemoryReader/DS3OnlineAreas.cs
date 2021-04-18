@@ -6,6 +6,7 @@ namespace DS3MemoryReader
 {
     class DS3OnlineAreas
     {
+        // These names don't really seem that accurate? I lifted these directly from the cheat engine table.
         public static Dictionary<int, string> IdToName = new Dictionary<int, string>() {{
             300001, "High Wall of Lothric" },{
             300002, "High Wall - Darkwraith Chamber" },{

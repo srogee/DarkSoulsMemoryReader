@@ -62,7 +62,7 @@ namespace DS3MemoryReader
                             onlineAreaDisplayValue = area;
                         }
                         
-                        sb.AppendLine($"Online Area: {onlineAreaDisplayValue} ({onlineArea})");
+                        sb.AppendLine($"Online Area: {onlineAreaDisplayValue} ({onlineArea})                    "); // spaces to clear out unwanted characters
                     }
                 }
 

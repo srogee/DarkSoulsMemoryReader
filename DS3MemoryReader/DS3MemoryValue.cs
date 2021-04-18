@@ -4,7 +4,7 @@ namespace DS3MemoryReader
 {
     public enum DS3AddressUpdateType
     {
-        Automatic
+        Automatic // Addresses are recalculated every time the value is read, to ensure they are always accurate
     }
 
     class DS3MemoryValue<T> {
@@ -37,7 +37,9 @@ namespace DS3MemoryReader
                     } else if (type == typeof(int)) {
                         value = BitConverter.ToInt32(GetRawBytes(4));
                     } else if (type == typeof(string)) {
-                        value = ReadString();
+                        // Currently only set up for unicode strings 16 characters or less
+                        byte[] bytes = GetRawBytes(16 * 2);
+                        value = System.Text.Encoding.Unicode.GetString(bytes);
                     } else {
                         throw new Exception($"DS3MemoryValue does not support generic type {type}");
                     }
@@ -49,13 +51,8 @@ namespace DS3MemoryReader
             }
         }
 
-        private string ReadString() {
-            byte[] bytes = GetRawBytes(16 * 2);
-            return System.Text.Encoding.Unicode.GetString(bytes);
-        }
-
+        // Regenerate the real address of the value, since the pointers could have changed
         public void RegenerateAddress() {
-            // Regenerate the real address of the value, since the pointers could have changed
             if (processInfo.IsValid) {
                 try {
                     realAddress = ReadIntPtrAtLocation(processInfo.Handle, processInfo.BaseAddress + memoryAddress.BaseAddress);
@@ -71,6 +68,14 @@ namespace DS3MemoryReader
                     processInfo.Detach();
                 }
             }
+        }
+
+        // Helper function for reading the memory at the specified location and converting it to an IntPtr
+        private static IntPtr ReadIntPtrAtLocation(IntPtr processHandle, IntPtr location) {
+            int bytesRead = 0;
+            byte[] buffer = new byte[8];
+            ProcessInterop.ReadProcessMemory(processHandle, location, buffer, buffer.Length, ref bytesRead);
+            return (IntPtr)BitConverter.ToInt64(buffer);
         }
 
         public byte[] GetRawBytes(int length) {
@@ -91,13 +96,6 @@ namespace DS3MemoryReader
 
         public override string ToString() {
             return Value.ToString();
-        }
-
-        private static IntPtr ReadIntPtrAtLocation(IntPtr processHandle, IntPtr location) {
-            int bytesRead = 0;
-            byte[] buffer = new byte[8];
-            ProcessInterop.ReadProcessMemory(processHandle, location, buffer, buffer.Length, ref bytesRead);
-            return (IntPtr)BitConverter.ToInt64(buffer);
         }
     }
 }
