@@ -4,55 +4,34 @@ namespace DS3MemoryReader
 {
     public enum DS3AddressUpdateType
     {
-        Automatic // Addresses are recalculated every time the value is read, to ensure they are always accurate
+        Automatic, // Addresses are recalculated every time the value is read, to ensure they are always accurate
+        Manual
     }
 
-    class DS3MemoryValue<T> {
+    class DS3MemoryValue {
         private DS3ProcessInfo processInfo;
         private DS3MemoryAddress memoryAddress;
         private IntPtr realAddress;
         private DS3AddressUpdateType updateType;
+        private bool hasGeneratedRealAddress;
 
-        public DS3MemoryValue(DS3ProcessInfo processInfo, DS3MemoryAddress memoryAddress) {
+        public DS3MemoryValue(DS3ProcessInfo processInfo, DS3MemoryAddress memoryAddress, DS3AddressUpdateType updateType) {
             this.processInfo = processInfo;
             this.memoryAddress = memoryAddress;
-            this.updateType = DS3AddressUpdateType.Automatic;
+            this.updateType = updateType;
         }
 
-        public T Value
-        {
-            // Get value at memory referenced by this class
-            get
-            {
-                if (processInfo.IsValid) {
-                    if (updateType == DS3AddressUpdateType.Automatic) {
-                        RegenerateAddress();
-                    }
-
-                    object value;
-                    Type type = typeof(T);
-
-                    if (type == typeof(float)) {
-                        value = BitConverter.ToSingle(GetRawBytes(4));
-                    } else if (type == typeof(int)) {
-                        value = BitConverter.ToInt32(GetRawBytes(4));
-                    } else if (type == typeof(string)) {
-                        // Currently only set up for unicode strings 16 characters or less
-                        byte[] bytes = GetRawBytes(16 * 2);
-                        value = System.Text.Encoding.Unicode.GetString(bytes);
-                    } else {
-                        throw new Exception($"DS3MemoryValue does not support generic type {type}");
-                    }
-
-                    return (T)value;
-                } else {
-                    return default(T);
-                }
+        // Regenerate the real address of one or more values
+        public static void RegenerateAddresses(params DS3MemoryValue[] values) {
+            foreach (DS3MemoryValue value in values) {
+                value.RegenerateAddress();
             }
         }
 
         // Regenerate the real address of the value, since the pointers could have changed
         public void RegenerateAddress() {
+            hasGeneratedRealAddress = false;
+
             if (processInfo.IsValid) {
                 try {
                     realAddress = ReadIntPtrAtLocation(processInfo.Handle, processInfo.BaseAddress + memoryAddress.BaseAddress);
@@ -63,6 +42,8 @@ namespace DS3MemoryReader
                         }
                         realAddress += memoryAddress.Offsets[memoryAddress.Offsets.Length - 1];
                     }
+
+                    hasGeneratedRealAddress = true;
                 } catch (Exception) {
                     // Assume the process has just exited
                     processInfo.Detach();
@@ -78,12 +59,13 @@ namespace DS3MemoryReader
             return (IntPtr)BitConverter.ToInt64(buffer);
         }
 
-        public byte[] GetRawBytes(int length) {
+        // Read the specified number of bytes at the specified offset from this value's real address
+        public byte[] GetRawBytes(int length, int offset = 0) {
             if (processInfo.IsValid) {
                 try {
                     int bytesRead = 0;
                     byte[] buffer = new byte[length];
-                    ProcessInterop.ReadProcessMemory(processInfo.Handle, realAddress, buffer, buffer.Length, ref bytesRead);
+                    ProcessInterop.ReadProcessMemory(processInfo.Handle, realAddress + offset, buffer, buffer.Length, ref bytesRead);
                     return buffer;
                 } catch (Exception) {
                     // Assume the process has just exited
@@ -92,6 +74,83 @@ namespace DS3MemoryReader
             }
 
             return new byte[0];
+        }
+
+        // Common function for value getters to use to set up the address and verify it's okay to read from
+        protected bool VerifyRealAddressIsValid() {
+            if (updateType == DS3AddressUpdateType.Automatic || !hasGeneratedRealAddress) {
+                RegenerateAddress();
+            }
+
+            return processInfo.IsValid && hasGeneratedRealAddress;
+        }
+    }
+
+    class DS3MemoryValueFloat : DS3MemoryValue
+    {
+        public DS3MemoryValueFloat(DS3ProcessInfo processInfo, DS3MemoryAddress memoryAddress, DS3AddressUpdateType updateType) : base(processInfo, memoryAddress, updateType) { }
+
+        public float Value
+        {
+            get
+            {
+                if (VerifyRealAddressIsValid()) {
+                    return BitConverter.ToSingle(GetRawBytes(4));
+                } else {
+                    return default(float);
+                }
+            }
+        }
+
+        public override string ToString() {
+            return Value.ToString();
+        }
+    }
+
+    class DS3MemoryValueInt32 : DS3MemoryValue
+    {
+        public DS3MemoryValueInt32(DS3ProcessInfo processInfo, DS3MemoryAddress memoryAddress, DS3AddressUpdateType updateType) : base(processInfo, memoryAddress, updateType) { }
+
+        public int Value
+        {
+            get
+            {
+                if (VerifyRealAddressIsValid()) {
+                    return BitConverter.ToInt32(GetRawBytes(4));
+                } else {
+                    return default(int);
+                }
+            }
+        }
+
+        public override string ToString() {
+            return Value.ToString();
+        }
+    }
+
+    class DS3MemoryValueString : DS3MemoryValue
+    {
+        private int maxLength;
+        public DS3MemoryValueString(DS3ProcessInfo processInfo, DS3MemoryAddress memoryAddress, DS3AddressUpdateType updateType, int maxLength) : base(processInfo, memoryAddress, updateType) {
+            this.maxLength = maxLength;
+        }
+
+        public string Value
+        {
+            get
+            {
+                if (VerifyRealAddressIsValid()) {
+                    byte[] bytes = GetRawBytes(maxLength * 2);
+                    string str = System.Text.Encoding.Unicode.GetString(bytes);
+                    int nullTerminatorIndex = str.IndexOf("\0");
+                    if (nullTerminatorIndex >= 0) {
+                        return str.Substring(0, nullTerminatorIndex);
+                    }
+                    return str;
+                } else {
+                    return default(string);
+                }
+            }
         }
 
         public override string ToString() {

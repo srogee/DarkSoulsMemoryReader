@@ -7,7 +7,7 @@ namespace DS3MemoryReader
         public int BaseAddress;
         public int[] Offsets;
 
-        public DS3MemoryAddress(int baseAddress, int[] offsets) {
+        public DS3MemoryAddress(int baseAddress, params int[] offsets) {
             BaseAddress = baseAddress;
             Offsets = offsets;
         }

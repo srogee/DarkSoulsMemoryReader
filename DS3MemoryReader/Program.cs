@@ -10,20 +10,27 @@ namespace DS3MemoryReader
             DS3ProcessInfo processInfo = new DS3ProcessInfo(); // Handles attaching/detaching from the main Dark Souls III process
             StringBuilder sb = new StringBuilder();
             Console.CursorVisible = false;
+            var tracker = new DS3MemoryValueTracker($"TrackedData_{DateTime.Now:yyyy_MM_dd_hh_mm_ss_tt}.csv");
 
             // Base addresses for lots of information in DS3
             int baseA = 0x4740178;
             int baseB = 0x4768E78;
-            DS3MemoryAddress coordinatesBase = new DS3MemoryAddress(baseB, new int[] { 0x40, 0x28 }); // Common pointer for coordinates
+            DS3MemoryAddress coordinatesBase = new DS3MemoryAddress(baseB, 0x40, 0x28); // Common pointer for coordinates
 
             // Define values we want to inspect
-            var playerAngle = new DS3MemoryValue<float>(processInfo, coordinatesBase.AddOffset(0x74));
-            var playerX = new DS3MemoryValue<float>(processInfo, coordinatesBase.AddOffset(0x80));
-            var playerZ = new DS3MemoryValue<float>(processInfo, coordinatesBase.AddOffset(0x84));
-            var playerY = new DS3MemoryValue<float>(processInfo, coordinatesBase.AddOffset(0x88));
+            var playerAngle = new DS3MemoryValueFloat(processInfo, coordinatesBase.AddOffset(0x74), DS3AddressUpdateType.Manual);
+            var playerX = new DS3MemoryValueFloat(processInfo, coordinatesBase.AddOffset(0x80), DS3AddressUpdateType.Manual);
+            var playerZ = new DS3MemoryValueFloat(processInfo, coordinatesBase.AddOffset(0x84), DS3AddressUpdateType.Manual);
+            var playerY = new DS3MemoryValueFloat(processInfo, coordinatesBase.AddOffset(0x88), DS3AddressUpdateType.Manual);
+            var name = new DS3MemoryValueString(processInfo, new DS3MemoryAddress(baseA, 0x10, 0x88), DS3AddressUpdateType.Manual, 16);
+            var onlineArea = new DS3MemoryValueInt32(processInfo, new DS3MemoryAddress(baseB, 0x80, 0x1ABC), DS3AddressUpdateType.Manual);
 
-            var name = new DS3MemoryValue<string>(processInfo, new DS3MemoryAddress(baseA, new int[] { 0x10, 0x88 }));
-            var onlineArea = new DS3MemoryValue<int>(processInfo, new DS3MemoryAddress(baseB, new int[] { 0x80, 0x1ABC}));
+            tracker.TrackValue("Character Name", name);
+            tracker.TrackValue("X", playerX);
+            tracker.TrackValue("Y", playerY);
+            tracker.TrackValue("Z", playerZ);
+            tracker.TrackValue("Angle", playerAngle);
+            tracker.TrackValue("Online Area", onlineArea);
 
             // Track console state so we can clear it if there would be visual artifacts
             int consoleState = 0;
@@ -39,6 +46,8 @@ namespace DS3MemoryReader
                     consoleState = 1;
                     sb.AppendLine("No DS3 process found");
                 } else {
+                    DS3MemoryValue.RegenerateAddresses(playerX, playerY, playerZ, playerAngle, name, onlineArea);
+
                     // The process is valid
                     sb.AppendLine($"Attached to process {processInfo.Process?.Id}");
 
@@ -56,6 +65,7 @@ namespace DS3MemoryReader
                         sb.AppendLine($"Y: {playerY.Value:0.000000}");
                         sb.AppendLine($"Z: {playerZ.Value:0.000000}");
                         sb.AppendLine($"Angle: {playerAngle.Value:0.000000}");
+                        tracker.SaveValues();
 
                         string onlineAreaDisplayValue = "Unknown";
                         if (DS3OnlineAreas.IdToName.TryGetValue(onlineArea.Value, out string area)) {
