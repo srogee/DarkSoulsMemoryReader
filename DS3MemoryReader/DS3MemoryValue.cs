@@ -8,7 +8,7 @@ namespace DS3MemoryReader
         Manual
     }
 
-    class DS3MemoryValue {
+    abstract class DS3MemoryValue {
         private DS3ProcessInfo processInfo;
         private DS3MemoryAddress memoryAddress;
         private IntPtr realAddress;
@@ -19,6 +19,10 @@ namespace DS3MemoryReader
             this.processInfo = processInfo;
             this.memoryAddress = memoryAddress;
             this.updateType = updateType;
+        }
+
+        public dynamic GetValueGeneric() {
+            return (this as dynamic).Value;
         }
 
         // Regenerate the real address of one or more values
@@ -84,6 +88,10 @@ namespace DS3MemoryReader
 
             return processInfo.IsValid && hasGeneratedRealAddress;
         }
+
+        public override string ToString() {
+            return GetValueGeneric().ToString();
+        }
     }
 
     class DS3MemoryValueFloat : DS3MemoryValue
@@ -101,10 +109,6 @@ namespace DS3MemoryReader
                 }
             }
         }
-
-        public override string ToString() {
-            return Value.ToString();
-        }
     }
 
     class DS3MemoryValueInt32 : DS3MemoryValue
@@ -121,10 +125,6 @@ namespace DS3MemoryReader
                     return default(int);
                 }
             }
-        }
-
-        public override string ToString() {
-            return Value.ToString();
         }
     }
 
@@ -151,10 +151,6 @@ namespace DS3MemoryReader
                     return default(string);
                 }
             }
-        }
-
-        public override string ToString() {
-            return Value.ToString();
         }
     }
 }
