@@ -122,6 +122,81 @@ namespace DS3MemoryReader
                 ["Bosses.Gael.Defeated"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x7D67), 7),
                 ["Bosses.DemonPrince.Defeated"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x7367), 7),
                 // TODO: Missing Ancient Wyvern?
+
+                // Doors and Shortcuts
+                ["Doors.PostIudexGundyr.Opened"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x24923), 3), // Gates to Firelink Shrine?
+                ["Doors.ArchivesStart.Opened"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x22631), 7), // Grand Archives Main Door?
+                ["Doors.PreTwinPrinces.Opened"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x22637), 3), // Twin Princes? Or is this the elevator
+
+                // Elevators
+                ["Elevators.Pontiff.Activated"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x23A3A), 3), // Pontiff's Shortcut?
+
+                // Misc
+                ["Misc.CoiledSword.Embedded"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x5A0F), 2),
+
+                // Bonfires
+                ["Bonfires.CemeteryOfAsh.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x5A03), 6),
+                ["Bonfires.IudexGundyr.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x5A03), 5),
+                ["Bonfires.FirelinkShrine.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x5A03), 7),
+                ["Bonfires.UntendedGraves.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x5A03), 4),
+                ["Bonfires.ChampionGundyr.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x5A03), 3),
+                ["Bonfires.HighWallOfLothric.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0xF02), 6),
+                ["Bonfires.TowerOnTheWall.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0xF03), 2),
+                ["Bonfires.VordtOfTheBorealValley.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0xF03), 5),
+                ["Bonfires.DancerOfTheBorealValley.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0xF03), 3),
+                ["Bonfires.OceirosTheConsumedKing.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0xF03), 6),
+                ["Bonfires.FootOfTheHighWall.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x1903), 3),
+                ["Bonfires.UndeadSettlement.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x1903), 7),
+                ["Bonfires.DilapidatedBridge.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x1903), 4),
+                ["Bonfires.CliffUnderside.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x1903), 5),
+                ["Bonfires.RoadOfSacrifices.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x2D03), 1),
+                ["Bonfires.HalfwayFortress.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x2D03), 7),
+                ["Bonfires.CrucifixionWoods.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x2D03), 0),
+                ["Bonfires.FarronKeep.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x2D03), 4),
+                ["Bonfires.KeepRuins.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x2D03), 3),
+                ["Bonfires.OldWolfOfFarron.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x2D03), 2),
+                ["Bonfires.CathedralOfTheDeep.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x3C03), 4),
+                ["Bonfires.CleansingChapel.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x3C03), 7),
+                ["Bonfires.RosariasBedChamber.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x3C03), 5),
+                ["Bonfires.CatacombsOfCarthus.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x5003), 1),
+                ["Bonfires.AbandonedTomb.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x5003), 6),
+                ["Bonfires.DemonRuins.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x5003), 4),
+                ["Bonfires.OldKingsAntechamber.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x5003), 5),
+                ["Bonfires.IrithyllOfTheBorealValley.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x4B03), 0),
+                ["Bonfires.CentralIrithyll.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x4B03), 3),
+                ["Bonfires.ChurchOfYorshka.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x4B03), 7),
+                ["Bonfires.DistantManor.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x4B03), 2),
+                ["Bonfires.WaterReserve.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x4B03), 1),
+                ["Bonfires.AnorLondo.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x4B03), 4),
+                ["Bonfires.PrisonTower.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x4B02), 7),
+                ["Bonfires.IrithyllDungeon.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x5503), 7),
+                ["Bonfires.ProfanedCapital.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x5503), 5),
+                ["Bonfires.ArchdragonPeak.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x2303), 7),
+                ["Bonfires.DragonkinMausoleum.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x2303), 4),
+                ["Bonfires.GreatBelfry.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x2303), 5),
+                ["Bonfires.LothricCastle.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x1403), 7),
+                ["Bonfires.DragonBarracks.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x1403), 5),
+                ["Bonfires.GrandArchives.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x3703), 6),
+                ["Bonfires.FlamelessShrine.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x5F03), 7),
+                ["Bonfires.KilnOfTheFirstFlame.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x5F03), 6),
+                ["Bonfires.Snowfield.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x6403), 6),
+                ["Bonfires.RopeBridgeCave.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x6403), 5),
+                ["Bonfires.AriandelChapel.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x6403), 2),
+                ["Bonfires.CorvianSettlement.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x6403), 4),
+                ["Bonfires.SnowyMountainPass.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x6403), 3),
+                ["Bonfires.DepthsOfThePainting.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x6403), 0),
+                ["Bonfires.TheDregHeap.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x7303), 6),
+                ["Bonfires.EarthenPeakRuins.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x7303), 5),
+                ["Bonfires.WithinTheEarthenPeakRuins.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x7303), 4),
+                ["Bonfires.TheDemonPrince.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x7303), 7),
+                ["Bonfires.MausoleumLookout.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x7803), 5),
+                ["Bonfires.RingedInnerWall.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x7803), 4),
+                ["Bonfires.RingedCityStreets.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x7803), 3),
+                ["Bonfires.SharedGrave.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x7803), 2),
+                ["Bonfires.ChurchOfFilianore.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x7803), 7),
+                ["Bonfires.DarkeaterMidir.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x7803), 6),
+                ["Bonfires.FilianoresRest.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x7D03), 6),
+                ["Bonfires.SlaveKnightGael.Lit"] = new DS3MemoryValueBoolFlag(processInfo, new DS3MemoryAddress(gameFlagData, 0, 0x7D03), 7),
             };
         }
 
@@ -181,7 +256,7 @@ namespace DS3MemoryReader
 
                 if ((valuesToInspect["Player.OnlineArea"] as DS3MemoryValueInt32).Value != 0) {
                     foreach (var kvp in valuesToInspect) {
-                        SetExpandoPropertyHierarchy(returnValue, kvp.Key, kvp.Value.GetValueGeneric());
+                        SetExpandoProperty(returnValue, kvp.Key, kvp.Value.GetValueGeneric());
                     }
                 }
             }
@@ -196,7 +271,7 @@ namespace DS3MemoryReader
                 DS3MemoryValue.RegenerateAddresses(flagsToInspect.Values.ToArray());
 
                 foreach (var kvp in flagsToInspect) {
-                    SetExpandoPropertyHierarchy(returnValue, kvp.Key, kvp.Value.GetValueGeneric());
+                    SetExpandoProperty(returnValue, kvp.Key, kvp.Value.GetValueGeneric());
                 }
             }
 
