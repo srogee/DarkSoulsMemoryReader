@@ -256,7 +256,7 @@ namespace DS3MemoryReader
 
                 if ((valuesToInspect["Player.OnlineArea"] as DS3MemoryValueInt32).Value != 0) {
                     foreach (var kvp in valuesToInspect) {
-                        SetExpandoProperty(returnValue, kvp.Key, kvp.Value.GetValueGeneric());
+                        SetExpandoPropertyHierarchy(returnValue, kvp.Key, kvp.Value.GetValueGeneric());
                     }
                 }
             }
