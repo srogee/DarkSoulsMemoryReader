@@ -5,7 +5,7 @@ using System.Linq;
 namespace DS3MemoryReader
 {
 
-    class DS3ProcessInfo
+    public class DS3ProcessInfo
     {
         public IntPtr Handle;
         public IntPtr BaseAddress;

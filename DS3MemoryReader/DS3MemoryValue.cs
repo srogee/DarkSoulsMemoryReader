@@ -8,7 +8,7 @@ namespace DS3MemoryReader
         Manual
     }
 
-    abstract class DS3MemoryValue {
+    public abstract class DS3MemoryValue {
         private DS3ProcessInfo processInfo;
         private DS3MemoryAddress memoryAddress;
         private IntPtr realAddress;

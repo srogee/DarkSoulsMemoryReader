@@ -2,7 +2,7 @@
 
 namespace DS3MemoryReader
 {
-    struct DS3MemoryAddress
+    public struct DS3MemoryAddress
     {
         public int BaseAddress;
         public int[] Offsets;

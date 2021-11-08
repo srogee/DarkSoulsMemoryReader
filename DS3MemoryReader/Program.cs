@@ -253,15 +253,16 @@ namespace DS3MemoryReader
             if (VerifyProcessIsValid(out dynamic returnValue)) {
                 // Regenerate addresses for the values we want to get
                 DS3MemoryValue.RegenerateAddresses(valuesToInspect.Values.ToArray());
-
-                if ((valuesToInspect["Player.OnlineArea"] as DS3MemoryValueInt32).Value != 0) {
-                    foreach (var kvp in valuesToInspect) {
-                        SetExpandoPropertyHierarchy(returnValue, kvp.Key, kvp.Value.GetValueGeneric());
-                    }
+                foreach (var kvp in valuesToInspect) {
+                    SetExpandoPropertyHierarchy(returnValue, kvp.Key, kvp.Value.GetValueGeneric());
                 }
             }
 
             return returnValue;
+        }
+
+        private bool NearlyZero(float value) {
+            return Math.Abs(value) < 0.1f;
         }
 
         // Gets world flag states
