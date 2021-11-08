@@ -4,7 +4,7 @@ namespace DS3MemoryReader
 {
     class DS3MemoryValueFloat : DS3MemoryValue
     {
-        public DS3MemoryValueFloat(DS3ProcessInfo processInfo, DS3MemoryAddress memoryAddress, DS3AddressUpdateType updateType) : base(processInfo, memoryAddress, updateType) { }
+        public DS3MemoryValueFloat(DS3ProcessInfo processInfo, DS3MemoryAddress memoryAddress, DS3AddressUpdateType updateType = DS3AddressUpdateType.Manual) : base(processInfo, memoryAddress, updateType) { }
 
         public float Value
         {
