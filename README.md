@@ -1,4 +1,4 @@
-# DS3 Memory Reader
+# Dark Souls Memory Reader
 A simple framework for reading game data from a Dark Souls III process in real time. Continually searches for the Dark Souls III process, so it will work fine if the game is closed and reopened. Potentialy use cases could be displaying where players died most frequently, what items were skipped, listing nearby enemies, etc.
 
 Offsets and addresses are taken from [this DS3 Cheat Table](https://github.com/igromanru/Dark-Souls-III-Cheat-Engine-Guide). It looks like most of the values displayed in the table can be read using the code in this repository. For example, here's the relevant Cheat Engine definition for the player angle:
