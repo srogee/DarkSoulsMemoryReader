@@ -4,8 +4,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
-    <AssemblyName>DS3MemoryReader</AssemblyName>
-    <RootNamespace>DS3MemoryReader</RootNamespace>
+    <AssemblyName>MemoryReader</AssemblyName>
+    <RootNamespace>MemoryReader</RootNamespace>
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
