@@ -23,3 +23,5 @@ And the relevant memory value definition (note that Cheat Engine's offsets are l
 ```
 ["Player.Angle"] = new FloatMemoryValue(new MemoryAddress(BaseB, 0x40, 0x28, 0x74)),
 ```
+
+A list of useful memory addresses is defined in [DarkSouls3.cs](https://github.com/srogee/DarkSoulsMemoryReader/blob/main/DarkSoulsMemoryReader/Games/DarkSouls3.cs).
