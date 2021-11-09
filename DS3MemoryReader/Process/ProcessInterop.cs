@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace DS3MemoryReader
+namespace MemoryReader
 {
     class ProcessInterop
     {
