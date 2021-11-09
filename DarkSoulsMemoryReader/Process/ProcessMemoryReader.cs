@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace DarkSoulsMemoryReader
 {
@@ -11,6 +12,15 @@ namespace DarkSoulsMemoryReader
         public IntPtr Handle;
         public IntPtr BaseAddress;
         private Process process;
+
+        private const int PROCESS_WM_READ = 0x0010;
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
+
+        [DllImport("kernel32.dll")]
+        private static extern bool ReadProcessMemory(IntPtr hProcess,
+        IntPtr lpBaseAddress, [Out] byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
 
         public ProcessMemoryReader(string processName) {
             ProcessName = processName;
@@ -29,7 +39,7 @@ namespace DarkSoulsMemoryReader
             if (newProcess != null && newProcess != process) {
                 try {
                     process = newProcess;
-                    Handle = ProcessInterop.OpenProcess(ProcessInterop.PROCESS_WM_READ, false, process.Id);
+                    Handle = OpenProcess(PROCESS_WM_READ, false, process.Id);
                     BaseAddress = process.MainModule.BaseAddress;
                 } catch (Exception) {
                     // Assume the process has just exited
@@ -58,7 +68,7 @@ namespace DarkSoulsMemoryReader
 
                     int bytesRead = 0;
                     buffer = new byte[length];
-                    ProcessInterop.ReadProcessMemory(Handle, realAddress + offset, buffer, buffer.Length, ref bytesRead);
+                    ReadProcessMemory(Handle, realAddress + offset, buffer, buffer.Length, ref bytesRead);
                     return true;
                 } catch (Exception) { }
             }
@@ -71,7 +81,7 @@ namespace DarkSoulsMemoryReader
         private static IntPtr ReadIntPtrAtLocation(IntPtr processHandle, IntPtr location) {
             int bytesRead = 0;
             byte[] buffer = new byte[8];
-            ProcessInterop.ReadProcessMemory(processHandle, location, buffer, buffer.Length, ref bytesRead);
+            ReadProcessMemory(processHandle, location, buffer, buffer.Length, ref bytesRead);
             return (IntPtr)BitConverter.ToInt64(buffer);
         }
     }
