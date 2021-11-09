@@ -1,4 +1,4 @@
-﻿namespace MemoryReader
+﻿namespace DarkSoulsMemoryReader
 {
     class Program
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MemoryReader
+namespace DarkSoulsMemoryReader
 {
     public class MemoryValue
     {

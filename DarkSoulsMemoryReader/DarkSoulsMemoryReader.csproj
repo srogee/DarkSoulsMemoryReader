@@ -4,8 +4,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
-    <AssemblyName>MemoryReader</AssemblyName>
-    <RootNamespace>MemoryReader</RootNamespace>
+    <AssemblyName>DarkSoulsMemoryReader</AssemblyName>
+    <RootNamespace>DarkSoulsMemoryReader</RootNamespace>
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 

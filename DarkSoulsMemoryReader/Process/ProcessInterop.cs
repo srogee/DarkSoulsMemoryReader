@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace MemoryReader
+namespace DarkSoulsMemoryReader
 {
     class ProcessInterop
     {

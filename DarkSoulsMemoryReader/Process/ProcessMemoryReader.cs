@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 
-namespace MemoryReader
+namespace DarkSoulsMemoryReader
 {
 
     public class ProcessMemoryReader

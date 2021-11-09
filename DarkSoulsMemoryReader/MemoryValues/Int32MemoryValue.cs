@@ -1,19 +1,19 @@
 ﻿using System;
 
-namespace MemoryReader
+namespace DarkSoulsMemoryReader
 {
-    public class FloatMemoryValue : MemoryValue
+    public class Int32MemoryValue : MemoryValue
     {
-        public FloatMemoryValue(MemoryAddress address) : base(address) {
+        public Int32MemoryValue(MemoryAddress address) : base(address) {
 
         }
 
         public override bool TryReadValue(ProcessMemoryReader reader, out dynamic value) {
             if (reader.TryReadRawBytes(Address, 0, 4, out byte[] buffer)) {
-                value = BitConverter.ToSingle(buffer);
+                value = BitConverter.ToInt32(buffer);
                 return true;
             } else {
-                value = default(float);
+                value = default(int);
                 return false;
             }
         }

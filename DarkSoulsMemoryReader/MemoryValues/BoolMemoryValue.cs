@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace MemoryReader
+namespace DarkSoulsMemoryReader
 {
     public class BoolMemoryValue : BinaryMemoryValue
     {

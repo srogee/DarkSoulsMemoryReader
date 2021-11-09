@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace MemoryReader
+namespace DarkSoulsMemoryReader
 {
     public class StringMemoryValue : MemoryValue
     {

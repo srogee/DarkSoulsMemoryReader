@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MemoryReader
+namespace DarkSoulsMemoryReader
 {
     public static class DarkSouls3
     {
