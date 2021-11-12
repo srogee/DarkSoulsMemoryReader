@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DarkSoulsMemoryReader
 {
@@ -8,7 +10,23 @@ namespace DarkSoulsMemoryReader
         public const int BaseB = 0x4768E78;
         public const int GameFlagData = 0x473BE28;
 
-        public static Dictionary<string, MemoryValue> KnownMemoryValues = new Dictionary<string, MemoryValue>() {
+        public static Dictionary<string, MemoryValue> GetOrCacheMemoryValues() {
+            if (knownMemoryValues == null) {
+                knownMemoryValues = new Dictionary<string, MemoryValue>();
+                foreach (var value in RealMemoryValues) {
+                    knownMemoryValues.Add(value.Key, value.Value);
+                }
+                foreach (var value in VirtualMemoryValues) {
+                    knownMemoryValues.Add(value.Key, value.Value);
+                }
+            }
+
+            return knownMemoryValues;
+        }
+
+        private static Dictionary<string, MemoryValue> knownMemoryValues;
+
+        private static Dictionary<string, MemoryValue> RealMemoryValues = new Dictionary<string, MemoryValue>() {
             // Player data
             ["Player.Angle"] = new FloatMemoryValue(new MemoryAddress(BaseB, 0x40, 0x28, 0x74)),
             ["Player.X"] = new FloatMemoryValue(new MemoryAddress(BaseB, 0x40, 0x28, 0x80)),
@@ -40,7 +58,7 @@ namespace DarkSoulsMemoryReader
             ["Bosses.Dancer.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0xF6C), 5),
             ["Bosses.Oceiros.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0xF6B), 1),
             ["Bosses.Oceiros.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0xF64), 1),
-            //["Bosses.ChampionGundyr.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5A64), 1), // Is this correct?
+            ["Bosses.ChampionGundyr.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5A64), 1), // Is this correct?
             ["Bosses.ChampionGundyr.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5A64), 0),
             ["Bosses.NamelessKing.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x2369), 5),
             ["Bosses.DragonslayerArmour.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x1467), 7),
@@ -62,12 +80,12 @@ namespace DarkSoulsMemoryReader
             // TODO: Missing Ancient Wyvern?
 
             // Doors and Shortcuts
-            //["Doors.PostIudexGundyr.Opened"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x24923), 3), // Gates to Firelink Shrine?
-            //["Doors.ArchivesStart.Opened"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x22631), 7), // Grand Archives Main Door?
-            //["Doors.PreTwinPrinces.Opened"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x22637), 3), // Twin Princes? Or is this the elevator
+            ["Doors.PostIudexGundyr.Opened"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x24923), 3), // Gates to Firelink Shrine?
+            ["Doors.ArchivesStart.Opened"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x22631), 7), // Grand Archives Main Door?
+            ["Doors.PreTwinPrinces.Opened"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x22637), 3), // Twin Princes? Or is this the elevator
 
             // Elevators
-            //["Elevators.Pontiff.Activated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x23A3A), 3), // Pontiff's Shortcut?
+            ["Elevators.Pontiff.Activated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x23A3A), 3), // Pontiff's Shortcut?
 
             // Misc
             ["Misc.CoiledSword.Embedded"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5A0F), 2),
@@ -136,6 +154,29 @@ namespace DarkSoulsMemoryReader
             ["Bonfires.FilianoresRest.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7D03), 6),
             ["Bonfires.SlaveKnightGael.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7D03), 7),
         };
+
+        private static Dictionary<string, MemoryValue> VirtualMemoryValues = new Dictionary<string, MemoryValue>() {
+            ["Items.SmallDoll.Held"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.Deacons.Defeated"]),
+            ["Items.GrandArchivesKey.Held"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.AbyssWatchers.Defeated"], RealMemoryValues["Bosses.Aldrich.Defeated"], RealMemoryValues["Bosses.YhormTheGiant.Defeated"]),
+
+            ["Bonfires.ChampionsGravetender.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.ChampionsGravetender.Defeated"]),
+            ["Bonfires.CrystalSage.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.CrystalSage.Defeated"]),
+            ["Bonfires.DeaconsOfTheDeep.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.Deacons.Defeated"]),
+            ["Bonfires.DragonslayerArmour.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.DragonslayerArmour.Defeated"]),
+            ["Bonfires.HighLordWolnir.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.Wolnir.Defeated"]),
+            ["Bonfires.NamelessKing.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.NamelessKing.Defeated"]),
+            ["Bonfires.SisterFriede.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.Friede.Defeated"]),
+            ["Bonfires.PontiffSulyvahn.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.Pontiff.Defeated"]),
+            ["Bonfires.SoulOfCinder.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.SoulOfCinder.Defeated"]),
+            ["Bonfires.TwinPrinces.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.TwinPrinces.Defeated"]),
+            ["Bonfires.AbyssWatchers.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.AbyssWatchers.Defeated"]),
+            ["Bonfires.AldrichDevourerOfGods.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.Aldrich.Defeated"]),
+            ["Bonfires.PitOfHollows.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.CurseRottedGreatwood.Defeated"]),
+            ["Bonfires.OldDemonKing.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.OldDemonKing.Defeated"]),
+            ["Bonfires.YhormTheGiant.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.YhormTheGiant.Defeated"]),
+        };
+
+        public static Dictionary<string, MemoryValue> KnownMemoryValues => GetOrCacheMemoryValues();
 
         public static Dictionary<int, string> OnlineAreas = new Dictionary<int, string>() {{
             300001, "High Wall of Lothric" },{

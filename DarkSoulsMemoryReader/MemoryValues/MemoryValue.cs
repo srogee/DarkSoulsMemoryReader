@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DarkSoulsMemoryReader
 {
     public class MemoryValue
     {
         public MemoryAddress Address;
+
+        public MemoryValue() { }
 
         public MemoryValue(MemoryAddress address) {
             Address = address;
