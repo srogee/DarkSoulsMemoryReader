@@ -6,26 +6,6 @@ namespace DarkSoulsMemoryReader
 {
     public static class DarkSouls3
     {
-        public const int BaseA = 0x4740178;
-        public const int BaseB = 0x4768E78;
-        public const int GameFlagData = 0x473BE28;
-
-        public static Dictionary<string, MemoryValue> GetOrCacheMemoryValues() {
-            if (knownMemoryValues == null) {
-                knownMemoryValues = new Dictionary<string, MemoryValue>();
-                foreach (var value in RealMemoryValues) {
-                    knownMemoryValues.Add(value.Key, value.Value);
-                }
-                foreach (var value in VirtualMemoryValues) {
-                    knownMemoryValues.Add(value.Key, value.Value);
-                }
-            }
-
-            return knownMemoryValues;
-        }
-
-        private static Dictionary<string, MemoryValue> knownMemoryValues;
-
         private static Dictionary<string, MemoryValue> RealMemoryValues = new Dictionary<string, MemoryValue>() {
             // Player data
             ["Player.Angle"] = new FloatMemoryValue(new MemoryAddress(BaseB, 0x40, 0x28, 0x74)),
@@ -35,148 +15,164 @@ namespace DarkSoulsMemoryReader
             ["Player.OnlineArea"] = new Int32MemoryValue(new MemoryAddress(BaseB, 0x80, 0x1ABC)),
 
             // Bosses
-            ["Bosses.IudexGundyr.PulledSwordOut"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5A67), 5),
-            ["Bosses.IudexGundyr.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5A67), 6),
-            ["Bosses.IudexGundyr.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5A67), 7),
-            ["Bosses.Vordt.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0xF67), 6),
-            ["Bosses.Vordt.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0xF67), 7),
-            ["Bosses.CurseRottedGreatwood.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x1967), 6),
-            ["Bosses.CurseRottedGreatwood.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x1967), 7),
-            ["Bosses.CrystalSage.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x2D69), 3),
-            ["Bosses.CrystalSage.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x2D69), 5),
-            ["Bosses.Deacons.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x3C67), 6),
-            ["Bosses.Deacons.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x3C67), 7),
-            ["Bosses.AbyssWatchers.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x2D67), 6),
-            ["Bosses.AbyssWatchers.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x2D67), 7),
-            ["Bosses.Wolnir.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5067), 6),
-            ["Bosses.Wolnir.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5067), 7),
-            ["Bosses.OldDemonKing.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5064), 1),
-            ["Bosses.YhormTheGiant.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5567), 6),
-            ["Bosses.YhormTheGiant.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5567), 7),
-            ["Bosses.Pontiff.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x4B69), 5),
-            ["Bosses.Aldrich.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x4B67), 7),
-            ["Bosses.Dancer.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0xF6C), 5),
-            ["Bosses.Oceiros.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0xF6B), 1),
-            ["Bosses.Oceiros.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0xF64), 1),
-            ["Bosses.ChampionGundyr.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5A64), 1), // Is this correct?
-            ["Bosses.ChampionGundyr.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5A64), 0),
-            ["Bosses.NamelessKing.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x2369), 5),
-            ["Bosses.DragonslayerArmour.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x1467), 7),
-            ["Bosses.TwinPrinces.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x3764), 0),
-            ["Bosses.TwinPrinces.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x3764), 1),
-            ["Bosses.SoulOfCinder.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5F67), 6),
-            ["Bosses.SoulOfCinder.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5F67), 7),
-            ["Bosses.ChampionsGravetender.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x6468), 2),
-            ["Bosses.ChampionsGravetender.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x6468), 3),
-            ["Bosses.Friede.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x6467), 6),
-            ["Bosses.Friede.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x6467), 7),
-            ["Bosses.Halflight.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7867), 6),
-            ["Bosses.Halflight.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7867), 7),
-            ["Bosses.Midir.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7869), 4),
-            ["Bosses.Midir.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7869), 5),
-            ["Bosses.Gael.Encountered"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7D67), 6),
-            ["Bosses.Gael.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7D67), 7),
-            ["Bosses.DemonPrince.Defeated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7367), 7),
+            ["Bosses.IudexGundyr.PulledSwordOut"] = DefineWorldFlag(0x5A67, 5),
+            ["Bosses.IudexGundyr.Encountered"] = DefineWorldFlag(0x5A67, 6),
+            ["Bosses.IudexGundyr.Defeated"] = DefineWorldFlag(0x5A67, 7),
+            ["Bosses.Vordt.Encountered"] = DefineWorldFlag(0xF67, 6),
+            ["Bosses.Vordt.Defeated"] = DefineWorldFlag(0xF67, 7),
+            ["Bosses.CurseRottedGreatwood.Encountered"] = DefineWorldFlag(0x1967, 6),
+            ["Bosses.CurseRottedGreatwood.Defeated"] = DefineWorldFlag(0x1967, 7),
+            ["Bosses.CrystalSage.Encountered"] = DefineWorldFlag(0x2D69, 3),
+            ["Bosses.CrystalSage.Defeated"] = DefineWorldFlag(0x2D69, 5),
+            ["Bosses.Deacons.Encountered"] = DefineWorldFlag(0x3C67, 6),
+            ["Bosses.Deacons.Defeated"] = DefineWorldFlag(0x3C67, 7),
+            ["Bosses.AbyssWatchers.Encountered"] = DefineWorldFlag(0x2D67, 6),
+            ["Bosses.AbyssWatchers.Defeated"] = DefineWorldFlag(0x2D67, 7),
+            ["Bosses.Wolnir.Encountered"] = DefineWorldFlag(0x5067, 6),
+            ["Bosses.Wolnir.Defeated"] = DefineWorldFlag(0x5067, 7),
+            ["Bosses.OldDemonKing.Defeated"] = DefineWorldFlag(0x5064, 1),
+            ["Bosses.YhormTheGiant.Encountered"] = DefineWorldFlag(0x5567, 6),
+            ["Bosses.YhormTheGiant.Defeated"] = DefineWorldFlag(0x5567, 7),
+            ["Bosses.Pontiff.Defeated"] = DefineWorldFlag(0x4B69, 5),
+            ["Bosses.Aldrich.Defeated"] = DefineWorldFlag(0x4B67, 7),
+            ["Bosses.Dancer.Defeated"] = DefineWorldFlag(0xF6C, 5),
+            ["Bosses.Oceiros.Encountered"] = DefineWorldFlag(0xF6B, 1),
+            ["Bosses.Oceiros.Defeated"] = DefineWorldFlag(0xF64, 1),
+            ["Bosses.ChampionGundyr.Encountered"] = DefineWorldFlag(0x5A64, 1), // Is this correct?
+            ["Bosses.ChampionGundyr.Defeated"] = DefineWorldFlag(0x5A64, 0),
+            ["Bosses.NamelessKing.Defeated"] = DefineWorldFlag(0x2369, 5),
+            ["Bosses.DragonslayerArmour.Defeated"] = DefineWorldFlag(0x1467, 7),
+            ["Bosses.TwinPrinces.Encountered"] = DefineWorldFlag(0x3764, 0),
+            ["Bosses.TwinPrinces.Defeated"] = DefineWorldFlag(0x3764, 1),
+            ["Bosses.SoulOfCinder.Encountered"] = DefineWorldFlag(0x5F67, 6),
+            ["Bosses.SoulOfCinder.Defeated"] = DefineWorldFlag(0x5F67, 7),
+            ["Bosses.ChampionsGravetender.Encountered"] = DefineWorldFlag(0x6468, 2),
+            ["Bosses.ChampionsGravetender.Defeated"] = DefineWorldFlag(0x6468, 3),
+            ["Bosses.Friede.Encountered"] = DefineWorldFlag(0x6467, 6),
+            ["Bosses.Friede.Defeated"] = DefineWorldFlag(0x6467, 7),
+            ["Bosses.Halflight.Encountered"] = DefineWorldFlag(0x7867, 6),
+            ["Bosses.Halflight.Defeated"] = DefineWorldFlag(0x7867, 7),
+            ["Bosses.Midir.Encountered"] = DefineWorldFlag(0x7869, 4),
+            ["Bosses.Midir.Defeated"] = DefineWorldFlag(0x7869, 5),
+            ["Bosses.Gael.Encountered"] = DefineWorldFlag(0x7D67, 6),
+            ["Bosses.Gael.Defeated"] = DefineWorldFlag(0x7D67, 7),
+            ["Bosses.DemonPrince.Defeated"] = DefineWorldFlag(0x7367, 7),
             // TODO: Missing Ancient Wyvern?
 
             // Doors and Shortcuts
-            ["Doors.PostIudexGundyr.Opened"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x24923), 3), // Gates to Firelink Shrine?
-            ["Doors.ArchivesStart.Opened"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x22631), 7), // Grand Archives Main Door?
-            ["Doors.PreTwinPrinces.Opened"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x22637), 3), // Twin Princes? Or is this the elevator
+            ["Doors.PostIudexGundyr.Opened"] = DefineWorldFlag(0x24923, 3), // Gates to Firelink Shrine?
+            ["Doors.ArchivesStart.Opened"] = DefineWorldFlag(0x22631, 7), // Grand Archives Main Door?
+            ["Doors.PreTwinPrinces.Opened"] = DefineWorldFlag(0x22637, 3), // Twin Princes? Or is this the elevator
 
             // Elevators
-            ["Elevators.Pontiff.Activated"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x23A3A), 3), // Pontiff's Shortcut?
+            ["Elevators.Pontiff.Activated"] = DefineWorldFlag(0x23A3A, 3), // Pontiff's Shortcut?
 
             // Misc
-            ["Misc.CoiledSword.Embedded"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5A0F), 2),
+            ["Misc.CoiledSword.Embedded"] = DefineWorldFlag(0x5A0F, 2),
 
             // Bonfires
-            ["Bonfires.CemeteryOfAsh.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5A03), 6),
-            ["Bonfires.IudexGundyr.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5A03), 5),
-            ["Bonfires.FirelinkShrine.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5A03), 7),
-            ["Bonfires.UntendedGraves.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5A03), 4),
-            ["Bonfires.ChampionGundyr.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5A03), 3),
-            ["Bonfires.HighWallOfLothric.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0xF02), 6),
-            ["Bonfires.TowerOnTheWall.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0xF03), 2),
-            ["Bonfires.VordtOfTheBorealValley.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0xF03), 5),
-            ["Bonfires.DancerOfTheBorealValley.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0xF03), 3),
-            ["Bonfires.OceirosTheConsumedKing.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0xF03), 6),
-            ["Bonfires.FootOfTheHighWall.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x1903), 3),
-            ["Bonfires.UndeadSettlement.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x1903), 7),
-            ["Bonfires.DilapidatedBridge.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x1903), 4),
-            ["Bonfires.CliffUnderside.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x1903), 5),
-            ["Bonfires.RoadOfSacrifices.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x2D03), 1),
-            ["Bonfires.HalfwayFortress.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x2D03), 7),
-            ["Bonfires.CrucifixionWoods.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x2D03), 0),
-            ["Bonfires.FarronKeep.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x2D03), 4),
-            ["Bonfires.KeepRuins.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x2D03), 3),
-            ["Bonfires.OldWolfOfFarron.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x2D03), 2),
-            ["Bonfires.CathedralOfTheDeep.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x3C03), 4),
-            ["Bonfires.CleansingChapel.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x3C03), 7),
-            ["Bonfires.RosariasBedChamber.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x3C03), 5),
-            ["Bonfires.CatacombsOfCarthus.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5003), 1),
-            ["Bonfires.AbandonedTomb.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5003), 6),
-            ["Bonfires.DemonRuins.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5003), 4),
-            ["Bonfires.OldKingsAntechamber.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5003), 5),
-            ["Bonfires.IrithyllOfTheBorealValley.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x4B03), 0),
-            ["Bonfires.CentralIrithyll.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x4B03), 3),
-            ["Bonfires.ChurchOfYorshka.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x4B03), 7),
-            ["Bonfires.DistantManor.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x4B03), 2),
-            ["Bonfires.WaterReserve.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x4B03), 1),
-            ["Bonfires.AnorLondo.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x4B03), 4),
-            ["Bonfires.PrisonTower.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x4B02), 7),
-            ["Bonfires.IrithyllDungeon.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5503), 7),
-            ["Bonfires.ProfanedCapital.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5503), 5),
-            ["Bonfires.ArchdragonPeak.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x2303), 7),
-            ["Bonfires.DragonkinMausoleum.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x2303), 4),
-            ["Bonfires.GreatBelfry.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x2303), 5),
-            ["Bonfires.LothricCastle.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x1403), 7),
-            ["Bonfires.DragonBarracks.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x1403), 5),
-            ["Bonfires.GrandArchives.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x3703), 6),
-            ["Bonfires.FlamelessShrine.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5F03), 7),
-            ["Bonfires.KilnOfTheFirstFlame.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x5F03), 6),
-            ["Bonfires.Snowfield.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x6403), 6),
-            ["Bonfires.RopeBridgeCave.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x6403), 5),
-            ["Bonfires.AriandelChapel.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x6403), 2),
-            ["Bonfires.CorvianSettlement.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x6403), 4),
-            ["Bonfires.SnowyMountainPass.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x6403), 3),
-            ["Bonfires.DepthsOfThePainting.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x6403), 0),
-            ["Bonfires.TheDregHeap.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7303), 6),
-            ["Bonfires.EarthenPeakRuins.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7303), 5),
-            ["Bonfires.WithinTheEarthenPeakRuins.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7303), 4),
-            ["Bonfires.TheDemonPrince.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7303), 7),
-            ["Bonfires.MausoleumLookout.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7803), 5),
-            ["Bonfires.RingedInnerWall.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7803), 4),
-            ["Bonfires.RingedCityStreets.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7803), 3),
-            ["Bonfires.SharedGrave.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7803), 2),
-            ["Bonfires.ChurchOfFilianore.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7803), 7),
-            ["Bonfires.DarkeaterMidir.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7803), 6),
-            ["Bonfires.FilianoresRest.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7D03), 6),
-            ["Bonfires.SlaveKnightGael.Lit"] = new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, 0x7D03), 7),
+            ["Bonfires.CemeteryOfAsh.Lit"] = DefineWorldFlag(0x5A03, 6),
+            ["Bonfires.IudexGundyr.Lit"] = DefineWorldFlag(0x5A03, 5),
+            ["Bonfires.FirelinkShrine.Lit"] = DefineWorldFlag(0x5A03, 7),
+            ["Bonfires.UntendedGraves.Lit"] = DefineWorldFlag(0x5A03, 4),
+            ["Bonfires.ChampionGundyr.Lit"] = DefineWorldFlag(0x5A03, 3),
+            ["Bonfires.HighWallOfLothric.Lit"] = DefineWorldFlag(0xF02, 6),
+            ["Bonfires.TowerOnTheWall.Lit"] = DefineWorldFlag(0xF03, 2),
+            ["Bonfires.VordtOfTheBorealValley.Lit"] = DefineWorldFlag(0xF03, 5),
+            ["Bonfires.DancerOfTheBorealValley.Lit"] = DefineWorldFlag(0xF03, 3),
+            ["Bonfires.OceirosTheConsumedKing.Lit"] = DefineWorldFlag(0xF03, 6),
+            ["Bonfires.FootOfTheHighWall.Lit"] = DefineWorldFlag(0x1903, 3),
+            ["Bonfires.UndeadSettlement.Lit"] = DefineWorldFlag(0x1903, 7),
+            ["Bonfires.DilapidatedBridge.Lit"] = DefineWorldFlag(0x1903, 4),
+            ["Bonfires.CliffUnderside.Lit"] = DefineWorldFlag(0x1903, 5),
+            ["Bonfires.RoadOfSacrifices.Lit"] = DefineWorldFlag(0x2D03, 1),
+            ["Bonfires.HalfwayFortress.Lit"] = DefineWorldFlag(0x2D03, 7),
+            ["Bonfires.CrucifixionWoods.Lit"] = DefineWorldFlag(0x2D03, 0),
+            ["Bonfires.FarronKeep.Lit"] = DefineWorldFlag(0x2D03, 4),
+            ["Bonfires.KeepRuins.Lit"] = DefineWorldFlag(0x2D03, 3),
+            ["Bonfires.OldWolfOfFarron.Lit"] = DefineWorldFlag(0x2D03, 2),
+            ["Bonfires.CathedralOfTheDeep.Lit"] = DefineWorldFlag(0x3C03, 4),
+            ["Bonfires.CleansingChapel.Lit"] = DefineWorldFlag(0x3C03, 7),
+            ["Bonfires.RosariasBedChamber.Lit"] = DefineWorldFlag(0x3C03, 5),
+            ["Bonfires.CatacombsOfCarthus.Lit"] = DefineWorldFlag(0x5003, 1),
+            ["Bonfires.AbandonedTomb.Lit"] = DefineWorldFlag(0x5003, 6),
+            ["Bonfires.DemonRuins.Lit"] = DefineWorldFlag(0x5003, 4),
+            ["Bonfires.OldKingsAntechamber.Lit"] = DefineWorldFlag(0x5003, 5),
+            ["Bonfires.IrithyllOfTheBorealValley.Lit"] = DefineWorldFlag(0x4B03, 0),
+            ["Bonfires.CentralIrithyll.Lit"] = DefineWorldFlag(0x4B03, 3),
+            ["Bonfires.ChurchOfYorshka.Lit"] = DefineWorldFlag(0x4B03, 7),
+            ["Bonfires.DistantManor.Lit"] = DefineWorldFlag(0x4B03, 2),
+            ["Bonfires.WaterReserve.Lit"] = DefineWorldFlag(0x4B03, 1),
+            ["Bonfires.AnorLondo.Lit"] = DefineWorldFlag(0x4B03, 4),
+            ["Bonfires.PrisonTower.Lit"] = DefineWorldFlag(0x4B02, 7),
+            ["Bonfires.IrithyllDungeon.Lit"] = DefineWorldFlag(0x5503, 7),
+            ["Bonfires.ProfanedCapital.Lit"] = DefineWorldFlag(0x5503, 5),
+            ["Bonfires.ArchdragonPeak.Lit"] = DefineWorldFlag(0x2303, 7),
+            ["Bonfires.DragonkinMausoleum.Lit"] = DefineWorldFlag(0x2303, 4),
+            ["Bonfires.GreatBelfry.Lit"] = DefineWorldFlag(0x2303, 5),
+            ["Bonfires.LothricCastle.Lit"] = DefineWorldFlag(0x1403, 7),
+            ["Bonfires.DragonBarracks.Lit"] = DefineWorldFlag(0x1403, 5),
+            ["Bonfires.GrandArchives.Lit"] = DefineWorldFlag(0x3703, 6),
+            ["Bonfires.FlamelessShrine.Lit"] = DefineWorldFlag(0x5F03, 7),
+            ["Bonfires.KilnOfTheFirstFlame.Lit"] = DefineWorldFlag(0x5F03, 6),
+            ["Bonfires.Snowfield.Lit"] = DefineWorldFlag(0x6403, 6),
+            ["Bonfires.RopeBridgeCave.Lit"] = DefineWorldFlag(0x6403, 5),
+            ["Bonfires.AriandelChapel.Lit"] = DefineWorldFlag(0x6403, 2),
+            ["Bonfires.CorvianSettlement.Lit"] = DefineWorldFlag(0x6403, 4),
+            ["Bonfires.SnowyMountainPass.Lit"] = DefineWorldFlag(0x6403, 3),
+            ["Bonfires.DepthsOfThePainting.Lit"] = DefineWorldFlag(0x6403, 0),
+            ["Bonfires.TheDregHeap.Lit"] = DefineWorldFlag(0x7303, 6),
+            ["Bonfires.EarthenPeakRuins.Lit"] = DefineWorldFlag(0x7303, 5),
+            ["Bonfires.WithinTheEarthenPeakRuins.Lit"] = DefineWorldFlag(0x7303, 4),
+            ["Bonfires.TheDemonPrince.Lit"] = DefineWorldFlag(0x7303, 7),
+            ["Bonfires.MausoleumLookout.Lit"] = DefineWorldFlag(0x7803, 5),
+            ["Bonfires.RingedInnerWall.Lit"] = DefineWorldFlag(0x7803, 4),
+            ["Bonfires.RingedCityStreets.Lit"] = DefineWorldFlag(0x7803, 3),
+            ["Bonfires.SharedGrave.Lit"] = DefineWorldFlag(0x7803, 2),
+            ["Bonfires.ChurchOfFilianore.Lit"] = DefineWorldFlag(0x7803, 7),
+            ["Bonfires.DarkeaterMidir.Lit"] = DefineWorldFlag(0x7803, 6),
+            ["Bonfires.FilianoresRest.Lit"] = DefineWorldFlag(0x7D03, 6),
+            ["Bonfires.SlaveKnightGael.Lit"] = DefineWorldFlag(0x7D03, 7),
         };
 
         private static Dictionary<string, MemoryValue> VirtualMemoryValues = new Dictionary<string, MemoryValue>() {
-            ["Items.SmallDoll.Held"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.Deacons.Defeated"]),
-            ["Items.GrandArchivesKey.Held"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.AbyssWatchers.Defeated"], RealMemoryValues["Bosses.Aldrich.Defeated"], RealMemoryValues["Bosses.YhormTheGiant.Defeated"]),
+            ["Items.SmallDoll.Held"] = DefineVirtualWorldFlag("Bosses.Deacons.Defeated"),
+            ["Items.GrandArchivesKey.Held"] = DefineVirtualWorldFlag("Bosses.AbyssWatchers.Defeated", "Bosses.Aldrich.Defeated", "Bosses.YhormTheGiant.Defeated"),
 
-            ["Bonfires.ChampionsGravetender.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.ChampionsGravetender.Defeated"]),
-            ["Bonfires.CrystalSage.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.CrystalSage.Defeated"]),
-            ["Bonfires.DeaconsOfTheDeep.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.Deacons.Defeated"]),
-            ["Bonfires.DragonslayerArmour.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.DragonslayerArmour.Defeated"]),
-            ["Bonfires.HighLordWolnir.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.Wolnir.Defeated"]),
-            ["Bonfires.NamelessKing.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.NamelessKing.Defeated"]),
-            ["Bonfires.SisterFriede.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.Friede.Defeated"]),
-            ["Bonfires.PontiffSulyvahn.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.Pontiff.Defeated"]),
-            ["Bonfires.SoulOfCinder.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.SoulOfCinder.Defeated"]),
-            ["Bonfires.TwinPrinces.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.TwinPrinces.Defeated"]),
-            ["Bonfires.AbyssWatchers.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.AbyssWatchers.Defeated"]),
-            ["Bonfires.AldrichDevourerOfGods.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.Aldrich.Defeated"]),
-            ["Bonfires.PitOfHollows.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.CurseRottedGreatwood.Defeated"]),
-            ["Bonfires.OldDemonKing.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.OldDemonKing.Defeated"]),
-            ["Bonfires.YhormTheGiant.Lit"] = new VirtualBoolMemoryValue(RealMemoryValues["Bosses.YhormTheGiant.Defeated"]),
+            ["Bonfires.ChampionsGravetender.Lit"] = DefineVirtualWorldFlag("Bosses.ChampionsGravetender.Defeated"),
+            ["Bonfires.CrystalSage.Lit"] = DefineVirtualWorldFlag("Bosses.CrystalSage.Defeated"),
+            ["Bonfires.DeaconsOfTheDeep.Lit"] = DefineVirtualWorldFlag("Bosses.Deacons.Defeated"),
+            ["Bonfires.DragonslayerArmour.Lit"] = DefineVirtualWorldFlag("Bosses.DragonslayerArmour.Defeated"),
+            ["Bonfires.HighLordWolnir.Lit"] = DefineVirtualWorldFlag("Bosses.Wolnir.Defeated"),
+            ["Bonfires.NamelessKing.Lit"] = DefineVirtualWorldFlag("Bosses.NamelessKing.Defeated"),
+            ["Bonfires.SisterFriede.Lit"] = DefineVirtualWorldFlag("Bosses.Friede.Defeated"),
+            ["Bonfires.PontiffSulyvahn.Lit"] = DefineVirtualWorldFlag("Bosses.Pontiff.Defeated"),
+            ["Bonfires.SoulOfCinder.Lit"] = DefineVirtualWorldFlag("Bosses.SoulOfCinder.Defeated"),
+            ["Bonfires.TwinPrinces.Lit"] = DefineVirtualWorldFlag("Bosses.TwinPrinces.Defeated"),
+            ["Bonfires.AbyssWatchers.Lit"] = DefineVirtualWorldFlag("Bosses.AbyssWatchers.Defeated"),
+            ["Bonfires.AldrichDevourerOfGods.Lit"] = DefineVirtualWorldFlag("Bosses.Aldrich.Defeated"),
+            ["Bonfires.PitOfHollows.Lit"] = DefineVirtualWorldFlag("Bosses.CurseRottedGreatwood.Defeated"),
+            ["Bonfires.OldDemonKing.Lit"] = DefineVirtualWorldFlag("Bosses.OldDemonKing.Defeated"),
+            ["Bonfires.YhormTheGiant.Lit"] = DefineVirtualWorldFlag("Bosses.YhormTheGiant.Defeated"),
         };
 
-        public static Dictionary<string, MemoryValue> KnownMemoryValues => GetOrCacheMemoryValues();
+        private const int BaseB = 0x4768E78;
+        private const int GameFlagData = 0x473BE28;
+
+        private static VirtualBoolMemoryValue DefineVirtualWorldFlag(params string[] flags) {
+            return new VirtualBoolMemoryValue(flags.Select(flagId => RealMemoryValues[flagId]).ToArray());
+        }
+
+        private static BoolMemoryValue DefineWorldFlag(int offset, int bitStart) {
+            return new BoolMemoryValue(new MemoryAddress(GameFlagData, 0, offset), bitStart);
+        }
+
+        public static Dictionary<string, MemoryValue> CompileMemoryValues() {
+            var sources = new[] { RealMemoryValues, VirtualMemoryValues };
+            return sources.SelectMany(dictionary => dictionary).ToDictionary(x => x.Key, y => y.Value);
+        }
+
+        public static Dictionary<string, MemoryValue> KnownMemoryValues = CompileMemoryValues();
 
         public static Dictionary<int, string> OnlineAreas = new Dictionary<int, string>() {{
             300001, "High Wall of Lothric" },{
